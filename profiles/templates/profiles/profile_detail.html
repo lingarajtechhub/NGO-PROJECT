@@ -1,0 +1,305 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="profile-section">
+  <h1 class="profile-title">Profile Details</h1>
+  <div class="profile-card">
+    <div class="form-container">
+      <div class="form-fields">
+        <div class="form-group inline">
+          <div>
+            <label>Registration Number:</label>
+            <p>{{ profile.registration_number }}</p>
+          </div>
+          <div>
+            <label>Date:</label>
+            <p>{{ profile.date }}</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Name:</label>
+          <p>{{ profile.name }}</p>
+        </div>
+        <div class="form-group">
+          <label>Gender:</label>
+          <p>{{ profile.gender }}</p>
+        </div>
+        <div class="form-group">
+          <label>Date of Birth:</label>
+          <p>{{ profile.date_of_birth }}</p>
+        </div>
+        <div class="form-group">
+          <label>Age:</label>
+          <p>{{ profile.age }}</p>
+        </div>
+        <div class="form-group">
+          <label>Spouse Name (Husband/Wife):</label>
+          <p>{{ profile.spouse_name }}</p>
+        </div>
+        <div class="form-group">
+          <label>Cause of Death of Spouse:</label>
+          <p>{{ profile.cause_of_death }}</p>
+        </div>
+        <div class="form-group">
+          <label>Nationality:</label>
+          <p>{{ profile.nationality }}</p>
+        </div>
+        <div class="form-group">
+          <label>Religion:</label>
+          <p>{{ profile.religion }}</p>
+        </div>
+        <div class="form-group">
+          <label>Address:</label>
+          <p>{{ profile.address }}</p>
+        </div>
+        <div class="form-group">
+          <label>Contact Phone:</label>
+          <p>{{ profile.contact_phone }}</p>
+        </div>
+        <div class="form-group">
+          <label>Widow's/Widower's Case History:</label>
+          <p>{{ profile.case_history }}</p>
+        </div>
+        <div class="form-group">
+          <label>Any Dependents:</label>
+          <p>{{ profile.dependents|default:"No" }}</p>
+        </div>
+        <label>(ଏହି ବିଧବା/ପରିତ୍ୟକ୍ତା ମହିଳା/ପୁରୁଷ ଉପରେ ନିର୍ଭର କରୁଥିବା କେହି ଅଛନ୍ତିକି ?)</label>
+        <div class="form-group inline">
+          <label>Name:</label>
+          <p>{{ profile.dependents_name|default:"N/A" }}</p>
+        </div>
+        <div class="form-group inline">
+          <label>Age:</label>
+          <p>{{ profile.dependents_age|default:"N/A" }}</p>
+        </div>
+        <div class="form-group inline">
+          <label>Sex:</label>
+          <p>{{ profile.dependents_sex|default:"N/A" }}</p>
+        </div>
+        <label class="label-heading">Prepared/Received Documents:</label><br>
+        <div class="form-group">
+          <label>Death Certificate:</label>
+          <p>{{ profile.death_certificate|yesno:"Yes,No" }}{% if profile.death_certificate_file %} (<a href="{{ profile.death_certificate_file.url }}" target="_blank">View File</a>){% endif %}</p>
+        </div>
+        <div class="form-group">
+          <label>Aadhar Card Photocopy:</label>
+          <p>{{ profile.aadhar_card|yesno:"Yes,No" }}{% if profile.aadhar_card_file %} (<a href="{{ profile.aadhar_card_file.url }}" target="_blank">View File</a>){% endif %}</p>
+        </div>
+        <div class="form-group">
+          <label>Aadhar Number:</label>
+          <p>{{ profile.aadhar_number|default:"N/A" }}</p>
+        </div>
+        <div class="form-group">
+          <label>Application:</label>
+          <p>{{ profile.application|yesno:"Yes,No" }}{% if profile.application_file %} (<a href="{{ profile.application_file.url }}" target="_blank">View File</a>){% endif %}</p>
+        </div>
+        <div class="form-group">
+          <label>Letter from Sarpanch/Ward Councillor/Pastor:</label>
+          <p>{{ profile.letter_from_sarpanch|yesno:"Yes,No" }}</p>
+        </div>
+        <div class="form-group">
+          <label>Emergency Contact:</label>
+          <p>{{ profile.emergency_contact }}</p>
+        </div>
+      </div>
+      <div class="photo-section">
+        {% if profile.photo %}
+          <img src="{{ profile.photo.url }}" alt="Profile Photo">
+        {% else %}
+          <span class="upload-icon">📸</span>
+          <p>Upload Passport Size Photo</p>
+          <span class="upload-instruction">No photo uploaded</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Page Background */
+  body {
+    background: linear-gradient(135deg, #f0f7fa 0%, #e6f0fa 100%);
+  }
+
+  /* Profile Section */
+  .profile-section {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+
+  /* Title */
+  .profile-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    background: linear-gradient(45deg, #4682b4, #007bff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Card Styling */
+  .profile-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    transition: transform 0.3s ease;
+  }
+
+  .profile-card:hover {
+    transform: translateY(-5px);
+  }
+
+  /* Form Container */
+  .form-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  /* Form Fields */
+  .form-fields {
+    flex: 1;
+    max-width: 650px;
+  }
+
+  .form-group {
+    background-color: #f8fafc;
+    border: 1px solid #e0e6ed;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 15px;
+    transition: border-color 0.3s ease;
+  }
+
+  .form-group:hover {
+    border-color: #4682b4;
+  }
+
+  .form-group label {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.1rem;
+  }
+
+  .form-group p {
+    margin: 0;
+    padding: 8px;
+    background-color: #fff;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #34495e;
+  }
+
+  .form-group.inline {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .form-group.inline > div {
+    flex: 1;
+    min-width: 150px;
+  }
+
+  .label-heading {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #4682b4;
+    margin: 15px 0 10px;
+  }
+
+  /* Photo Section (Original Positioning and Style) */
+  .photo-section {
+    width: 120px;
+    height: 150px;
+    border: 2px dashed #4682b4;
+    background-color: #e6f0fa;
+    text-align: center;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+  }
+
+  .photo-section:hover {
+    background-color: #d1e4f7;
+  }
+
+  .photo-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .photo-section p {
+    margin: 0;
+    font-size: 12px;
+    color: #4682b4;
+    font-weight: bold;
+  }
+
+  .photo-section .upload-instruction {
+    font-size: 10px;
+    color: #666;
+    margin-top: 5px;
+  }
+
+  .photo-section .upload-icon {
+    font-size: 20px;
+    color: #4682b4;
+    margin-bottom: 5px;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .form-container {
+      flex-direction: column;
+      align-items: center;
+    }
+    .photo-section {
+      width: 100px;
+      height: 125px;
+      margin: 0 auto;
+    }
+    .profile-title {
+      font-size: 2rem;
+    }
+    .profile-card {
+      padding: 20px;
+    }
+    .form-fields {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .profile-section {
+      margin: 20px auto;
+      padding: 10px;
+    }
+    .photo-section {
+      width: 90px;
+      height: 110px;
+    }
+    .form-group.inline {
+      flex-direction: column;
+    }
+    .form-group.inline > div {
+      min-width: 100%;
+    }
+    .profile-title {
+      font-size: 1.8rem;
+    }
+  }
+</style>
+{% endblock %}

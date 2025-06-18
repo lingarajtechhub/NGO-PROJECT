@@ -1,0 +1,772 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!--<div class="form-header">
+    <h1>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Widow/Widower Profile</h1>
+</div>-->
+<div class="form-wrapper">
+    <form method="post" enctype="multipart/form-data" class="form-content" id="profile-form">
+        {% csrf_token %}
+        <div class="form-container">
+            <div class="form-fields">
+                <div class="form-group inline">
+                    <div>
+                        <label for="id_registration_number">Registration Number:</label>
+                        {{ form.registration_number }}
+                        <span class="error-message" id="error-registration_number"></span>
+                    </div>
+                    <div>
+                        <label for="id_date">Date:</label>
+                        {{ form.date }}
+                        <span class="error-message" id="error-date"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id_name">Name:</label>
+                    {{ form.name }}
+                    <span class="error-message" id="error-name"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_gender">Gender:</label>
+                    {{ form.gender }}
+                    <span class="error-message" id="error-gender"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_date_of_birth">Date of Birth:</label>
+                    {{ form.date_of_birth }}
+                    <span class="error-message" id="error-date_of_birth"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_age">Age:</label>
+                    {{ form.age }}
+                    <span class="error-message" id="error-age"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_spouse_name">Spouse Name (Husband/Wife):</label>
+                    {{ form.spouse_name }}
+                    <span class="error-message" id="error-spouse_name"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_cause_of_death">Cause of Death of Wife/Husband:</label>
+                    {{ form.cause_of_death }}
+                    <span class="error-message" id="error-cause_of_death"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_nationality">Nationality:</label>
+                    {{ form.nationality }}
+                    <span class="error-message" id="error-nationality"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_religion">Religion:</label>
+                    {{ form.religion }}
+                    <span class="error-message" id="error-religion"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_address">Address:</label>
+                    {{ form.address }}
+                    <span class="error-message" id="error-address"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_contact_phone">Contact Phone:</label>
+                    {{ form.contact_phone }}
+                    <span class="error-message" id="error-contact_phone"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_case_history">Widow's/Widower's Case History:</label>
+                    {{ form.case_history }}
+                    <span class="error-message" id="error-case_history"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_dependents">Any Dependents:</label>
+                    <div class="dependents-radio-group">
+                        <div class="radio-option">
+                            <input type="radio" name="dependents" id="id_dependents_yes" value="Yes" {% if form.dependents.value == 'Yes' %}checked{% endif %}>
+                            <label for="id_dependents_yes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="dependents" id="id_dependents_no" value="No" {% if form.dependents.value == 'No' or not form.dependents.value %}checked{% endif %}>
+                            <label for="id_dependents_no">No</label>
+                        </div>
+                    </div>
+                    <span class="error-message" id="error-dependents"></span>
+                </div>
+                <div id="dependents-fields" style="display: {% if form.dependents.value == 'Yes' %}block{% else %}none{% endif %};">
+                    <label class="section-label"><b>(ଏହି ବିଧବା/ପରିତ୍ୟକ୍ତା ମହିଳା/ପୁରୁଷ ଉପରେ ନିର୍ଭର କରୁଥିବା କେହି ଅଛନ୍ତିକି ?)</b></label>
+                    <div class="form-group">
+                        <label for="id_dependents_name">Name:</label>
+                        {{ form.dependents_name }}
+                        <span class="error-message" id="error-dependents_name"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_dependents_age">Age:</label>
+                        {{ form.dependents_age }}
+                        <span class="error-message" id="error-dependents_age"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_dependents_sex">Sex:</label>
+                        {{ form.dependents_sex }}
+                        <span class="error-message" id="error-dependents_sex"></span>
+                    </div>
+                </div>
+                <label class="section-label"><b>Prepared/Received the Proper Documents:</b></label>
+                <div class="form-group">
+                    <label for="id_death_certificate">Death Certificate:</label>
+                    {{ form.death_certificate }}
+                    <input type="hidden" id="initial-death-certificate" value="{{ form.death_certificate.value|yesno:'true,false' }}">
+                    <div id="death-certificate-upload" class="file-upload-section" style="display: {{ form.death_certificate.value|yesno:'block,none' }};">
+                        <div class="upload-row">
+                            <label class="upload-label">Upload Death Certificate:</label>
+                            <span class="file-upload-trigger" id="death-file-trigger">Choose file to upload</span>
+                            <span class="file-name" id="death-file-name">No file chosen</span>
+                        </div>
+                        <input type="file" id="id_death_file" name="death_certificate_file" accept="image/jpeg,image/png,application/pdf" style="display: none;">
+                    </div>
+                    <span class="error-message" id="error-death_file"></span>
+                    <span class="error-message" id="error-death_certificate"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_aadhar_card">Aadhar Card Photo Copy:</label>
+                    {{ form.aadhar_card }}
+                    <input type="hidden" id="initial-aadhar-card" value="{{ form.aadhar_card.value|yesno:'true,false' }}">
+                    <div id="aadhar-card-upload" class="file-upload-section" style="display: {{ form.aadhar_card.value|yesno:'block,none' }};">
+                        <div class="upload-row">
+                            <label class="upload-label">Upload Aadhar Card:</label>
+                            <span class="file-upload-trigger" id="aadhar-file-trigger">Choose file to upload</span>
+                            <span class="file-name" id="aadhar-file-name">No file chosen</span>
+                        </div>
+                        <input type="file" id="id_aadhar_file" name="aadhar_card_file" accept="image/jpeg,image/png,application/pdf" style="display: none;">
+                    </div>
+                    <span class="error-message" id="error-aadhar_file"></span>
+                    <span class="error-message" id="error-aadhar_card"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_aadhar_number">Aadhar Number:</label>
+                    {{ form.aadhar_number }}
+                    <span class="error-message" id="error-aadhar_number"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_application">Application:</label>
+                    {{ form.application }}
+                    <input type="hidden" id="initial-application" value="{{ form.application.value|yesno:'true,false' }}">
+                    <div id="application-upload" class="file-upload-section" style="display: {{ form.application.value|yesno:'block,none' }};">
+                        <div class="upload-row">
+                            <label class="upload-label">Upload Application:</label>
+                            <span class="file-upload-trigger" id="application-file-trigger">Choose file to upload</span>
+                            <span class="file-name" id="application-file-name">No file chosen</span>
+                        </div>
+                        <input type="file" id="id_application_file" name="application_file" accept="image/jpeg,image/png,application/pdf" style="display: none;">
+                    </div>
+                    <span class="error-message" id="error-application_file"></span>
+                    <span class="error-message" id="error-application"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_letter_from_sarpanch">Letter from Sarpanch/Ward Counselor/Pastor:</label>
+                    {{ form.letter_from_sarpanch }}
+                    <span class="error-message" id="error-letter_from_sarpanch"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_emergency_contact">Emergency Contact:</label>
+                    {{ form.emergency_contact }}
+                    <span class="error-message" id="error-emergency_contact"></span>
+                </div>
+                <div class="form-group">
+                    <label for="id_photo">Photo:</label>
+                    {{ form.photo }}
+                    <span class="error-message" id="error-photo"></span>
+                </div>
+            </div>
+            <div class="photo-section" id="photo-section" aria-label="Click to upload a passport size photo">
+                {% if form.instance.photo %}
+                    <img src="{{ form.instance.photo.url }}" alt="Profile Photo" id="photo-preview">
+                {% else %}
+                    <img src="" alt="Profile Photo" id="photo-preview" style="display: none;">
+                    <span class="upload-icon">📸</span>
+                    <p id="photo-text">Upload Passport Size Photo</p>
+                    <span class="upload-instruction">Click to upload</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" id="clear-button" class="btn btn-secondary">Clear</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Toggle dependents fields based on radio button selection
+    const dependentsYes = document.getElementById('id_dependents_yes');
+    const dependentsNo = document.getElementById('id_dependents_no');
+    const dependentsFields = document.getElementById('dependents-fields');
+
+    function toggleDependentsFields() {
+        dependentsFields.style.display = dependentsYes.checked ? 'block' : 'none';
+    }
+
+    dependentsYes.addEventListener('change', toggleDependentsFields);
+    dependentsNo.addEventListener('change', toggleDependentsFields);
+    toggleDependentsFields();
+
+    // Toggle death certificate upload field
+    const deathCheckbox = document.getElementById('id_death_certificate');
+    const deathUpload = document.getElementById('death-certificate-upload');
+    const deathFileInput = document.getElementById('id_death_file');
+    const deathFileTrigger = document.getElementById('death-file-trigger');
+    const deathFileName = document.getElementById('death-file-name');
+    const initialDeathValue = document.getElementById('initial-death-certificate').value === 'true';
+    console.log('Death Checkbox:', deathCheckbox ? deathCheckbox.checked : 'Not found');
+    console.log('Death Initial Value from Hidden:', initialDeathValue);
+    console.log('Death Upload Initial Display:', deathUpload ? deathUpload.style.display : 'Not found');
+    if (deathCheckbox) {
+        deathUpload.style.display = (deathCheckbox.checked || initialDeathValue) ? 'block' : 'none';
+        deathCheckbox.addEventListener('change', () => {
+            deathUpload.style.display = deathCheckbox.checked ? 'block' : 'none';
+            console.log('Death Checkbox Changed:', deathCheckbox.checked, 'Display:', deathUpload.style.display);
+        });
+    }
+
+    // Trigger file input for death certificate and update file name
+    if (deathFileTrigger && deathFileInput && deathFileName) {
+        deathFileTrigger.addEventListener('click', () => {
+            deathFileInput.click();
+        });
+        deathFileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            deathFileName.textContent = file ? file.name : 'No file chosen';
+        });
+    }
+
+    // Toggle Aadhar card upload field
+    const aadharCheckbox = document.getElementById('id_aadhar_card');
+    const aadharUpload = document.getElementById('aadhar-card-upload');
+    const aadharFileInput = document.getElementById('id_aadhar_file');
+    const aadharFileTrigger = document.getElementById('aadhar-file-trigger');
+    const aadharFileName = document.getElementById('aadhar-file-name');
+    const initialAadharValue = document.getElementById('initial-aadhar-card').value === 'true';
+    console.log('Aadhar Checkbox:', aadharCheckbox ? aadharCheckbox.checked : 'Not found');
+    console.log('Aadhar Initial Value from Hidden:', initialAadharValue);
+    console.log('Aadhar Upload Initial Display:', aadharUpload ? aadharUpload.style.display : 'Not found');
+    if (aadharCheckbox) {
+        aadharUpload.style.display = (aadharCheckbox.checked || initialAadharValue) ? 'block' : 'none';
+        aadharCheckbox.addEventListener('change', () => {
+            aadharUpload.style.display = aadharCheckbox.checked ? 'block' : 'none';
+            console.log('Aadhar Checkbox Changed:', aadharCheckbox.checked, 'Display:', aadharUpload.style.display);
+        });
+    }
+
+    // Trigger file input for Aadhar card and update file name
+    if (aadharFileTrigger && aadharFileInput && aadharFileName) {
+        aadharFileTrigger.addEventListener('click', () => {
+            aadharFileInput.click();
+        });
+        aadharFileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            aadharFileName.textContent = file ? file.name : 'No file chosen';
+        });
+    }
+
+    // Toggle Application upload field
+    const applicationCheckbox = document.getElementById('id_application');
+    const applicationUpload = document.getElementById('application-upload');
+    const applicationFileInput = document.getElementById('id_application_file');
+    const applicationFileTrigger = document.getElementById('application-file-trigger');
+    const applicationFileName = document.getElementById('application-file-name');
+    const initialApplicationValue = document.getElementById('initial-application').value === 'true';
+    console.log('Application Checkbox:', applicationCheckbox ? applicationCheckbox.checked : 'Not found');
+    console.log('Application Initial Value from Hidden:', initialApplicationValue);
+    console.log('Application Upload Initial Display:', applicationUpload ? applicationUpload.style.display : 'Not found');
+    if (applicationCheckbox) {
+        applicationUpload.style.display = (applicationCheckbox.checked || initialApplicationValue) ? 'block' : 'none';
+        applicationCheckbox.addEventListener('change', () => {
+            applicationUpload.style.display = applicationCheckbox.checked ? 'block' : 'none';
+            console.log('Application Checkbox Changed:', applicationCheckbox.checked, 'Display:', applicationUpload.style.display);
+        });
+    }
+
+    // Trigger file input for Application and update file name
+    if (applicationFileTrigger && applicationFileInput && applicationFileName) {
+        applicationFileTrigger.addEventListener('click', () => {
+            applicationFileInput.click();
+        });
+        applicationFileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            applicationFileName.textContent = file ? file.name : 'No file chosen';
+        });
+    }
+
+    const photoSection = document.getElementById('photo-section');
+    const photoInput = document.getElementById('id_photo');
+    const photoPreview = document.getElementById('photo-preview');
+    const photoText = document.getElementById('photo-text');
+
+    photoSection.addEventListener('click', () => {
+        photoInput.click();
+    });
+
+    photoInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                photoPreview.src = e.target.result;
+                photoPreview.style.display = 'block';
+                if (photoText) {
+                    photoText.style.display = 'none';
+                }
+                const uploadInstruction = photoSection.querySelector('.upload-instruction');
+                const uploadIcon = photoSection.querySelector('.upload-icon');
+                if (uploadInstruction) uploadInstruction.style.display = 'none';
+                if (uploadIcon) uploadIcon.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Clear button functionality
+    document.getElementById('clear-button').addEventListener('click', function() {
+        const form = document.querySelector('form');
+        form.reset(); // Resets all form fields to their initial values
+
+        // Reset dependents fields visibility
+        toggleDependentsFields();
+
+        // Reset death certificate upload field
+        deathUpload.style.display = 'none';
+        if (deathFileInput) deathFileInput.value = '';
+        if (deathFileName) deathFileName.textContent = 'No file chosen';
+
+        // Reset Aadhar card upload field
+        aadharUpload.style.display = 'none';
+        if (aadharFileInput) aadharFileInput.value = '';
+        if (aadharFileName) aadharFileName.textContent = 'No file chosen';
+
+        // Reset application upload field
+        applicationUpload.style.display = 'none';
+        if (applicationFileInput) applicationFileInput.value = '';
+        if (applicationFileName) applicationFileName.textContent = 'No file chosen';
+
+        // Reset the photo section to its initial state
+        photoPreview.src = '';
+        photoPreview.style.display = 'none';
+        if (photoText) {
+            photoText.style.display = 'block';
+        }
+        const photoUploadInstruction = photoSection.querySelector('.upload-instruction');
+        const photoUploadIcon = photoSection.querySelector('.upload-icon');
+        if (photoUploadInstruction) photoUploadInstruction.style.display = 'block';
+        if (photoUploadIcon) photoUploadIcon.style.display = 'block';
+        
+        // Clear all error messages
+        document.querySelectorAll('.error-message').forEach(error => {
+            error.textContent = '';
+        });
+    });
+
+    // Form validation
+    document.getElementById('profile-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        let isValid = true;
+        const errors = {};
+
+        // Clear previous error messages
+        document.querySelectorAll('.error-message').forEach(error => {
+            error.textContent = '';
+        });
+
+        // Helper function to set error message
+        const setError = (fieldId, message) => {
+            document.getElementById(`error-${fieldId}`).textContent = message;
+            isValid = false;
+        };
+
+        // Required fields validation
+        const textFields = [
+            'registration_number', 'date', 'name', 'date_of_birth', 
+            'age', 'spouse_name', 'cause_of_death', 'nationality', 'religion', 
+            'address', 'contact_phone', 'case_history', 'emergency_contact'
+        ];
+        const selectFields = ['gender'];
+        const radioFields = ['dependents'];
+
+        // Validate text fields
+        textFields.forEach(field => {
+            const element = document.getElementById(`id_${field}`);
+            if (element) {
+                const value = element.value.trim();
+                if (!value) {
+                    setError(field, `${field.replace('_', ' ')} is required`);
+                }
+            } else {
+                console.warn(`Element with ID id_${field} not found`);
+            }
+        });
+
+        // Validate select fields
+        selectFields.forEach(field => {
+            const element = document.getElementById(`id_${field}`);
+            if (element) {
+                const value = element.value.trim();
+                if (!value) {
+                    setError(field, `${field.replace('_', ' ')} is required`);
+                }
+            } else {
+                console.warn(`Element with ID id_${field} not found`);
+            }
+        });
+
+        // Validate radio fields
+        radioFields.forEach(field => {
+            const radios = document.getElementsByName(field);
+            const isChecked = Array.from(radios).some(radio => radio.checked);
+            if (!isChecked) {
+                setError(field, `${field.replace('_', ' ')} is required`);
+            }
+        });
+
+        // Phone number validation (Indian format: 10 digits)
+        const contactPhone = document.getElementById('id_contact_phone').value.trim();
+        const phoneRegex = /^[6-9]\d{9}$/;
+        if (contactPhone && !phoneRegex.test(contactPhone)) {
+            setError('contact_phone', 'Enter a valid 10-digit Indian phone number');
+        }
+
+        // Emergency contact validation
+        const emergencyContact = document.getElementById('id_emergency_contact').value.trim();
+        if (emergencyContact && !phoneRegex.test(emergencyContact)) {
+            setError('emergency_contact', 'Enter a valid 10-digit Indian phone number');
+        }
+
+        // Aadhar number validation (12 digits)
+        const aadharNumber = document.getElementById('id_aadhar_number').value.trim();
+        if (aadharNumber && !/^\d{12}$/.test(aadharNumber)) {
+            setError('aadhar_number', 'Aadhar number must be 12 digits');
+        }
+
+        // Age validation (positive number, reasonable range)
+        const age = document.getElementById('id_age').value;
+        if (age && (isNaN(age) || age < 18 || age > 120)) {
+            setError('age', 'Age must be a number between 18 and 120');
+        }
+
+        // Dependents fields validation (if one is filled, all should be)
+        const dependentsFields = ['dependents_name', 'dependents_age', 'dependents_sex'];
+        const dependentsValues = dependentsFields.map(field => {
+            const element = document.getElementById(`id_${field}`);
+            return element ? element.value.trim() : '';
+        });
+        const anyDependentFilled = dependentsValues.some(value => value);
+        if (anyDependentFilled && !dependentsValues.every(value => value)) {
+            dependentsFields.forEach(field => {
+                const element = document.getElementById(`id_${field}`);
+                if (element && !element.value.trim()) {
+                    setError(field, `${field.replace('_', ' ')} is required if any dependent field is filled`);
+                }
+            });
+        }
+
+        // Photo validation (optional, but if provided, check file type)
+        const photoInput = document.getElementById('id_photo');
+        if (photoInput.files.length > 0) {
+            const file = photoInput.files[0];
+            const validImageTypes = ['image/jpeg', 'image/png'];
+            if (!validImageTypes.includes(file.type)) {
+                setError('photo', 'Photo must be a JPEG or PNG file');
+            }
+        }
+
+        // Death certificate file validation (optional, but if provided, check file type)
+        if (deathFileInput && deathFileInput.files.length > 0) {
+            const file = deathFileInput.files[0];
+            const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+            if (!validTypes.includes(file.type)) {
+                setError('death_file', 'Death certificate must be a JPEG, PNG, or PDF file');
+            }
+        }
+
+        // Aadhar card file validation (optional, but if provided, check file type)
+        if (aadharFileInput && aadharFileInput.files.length > 0) {
+            const file = aadharFileInput.files[0];
+            const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+            if (!validTypes.includes(file.type)) {
+                setError('aadhar_file', 'Aadhar card must be a JPEG, PNG, or PDF file');
+            }
+        }
+
+        // Application file validation (optional, but if provided, check file type)
+        if (applicationFileInput && applicationFileInput.files.length > 0) {
+            const file = applicationFileInput.files[0];
+            const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+            if (!validTypes.includes(file.type)) {
+                setError('application_file', 'Application must be a JPEG, PNG, or PDF file');
+            }
+        }
+
+        // If all validations pass, submit the form
+        if (isValid) {
+            this.submit();
+        }
+    });
+</script>
+
+<style>
+    .form-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .form-header h1 {
+        color: #4682b4;
+        font-size: 2.5rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .form-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 20px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e6f0fa 100%);
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .form-content {
+        width: 100%;
+        max-width: 900px;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    .form-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 30px; /* Increased padding between form and photo */
+    }
+    .form-fields {
+        flex: 1;
+        max-width: 650px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: block;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 10px;
+        font-size: 15px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: #4682b4;
+        box-shadow: 0 0 5px rgba(70, 130, 180, 0.3);
+        outline: none;
+    }
+    .form-group.inline {
+        gap: 20px;
+    }
+    .section-label {
+        font-size: 1.1rem;
+        color: #4682b4;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        display: block;
+    }
+    .dependents-radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .radio-option {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .radio-option input[type="radio"] {
+        width: 16px;
+        height: 16px;
+    }
+    .radio-option label {
+        font-size: 15px;
+        color: #333;
+        margin-bottom: 0;
+        font-weight: normal;
+    }
+    .file-upload-section {
+        margin-top: 10px;
+    }
+    .upload-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .upload-label {
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 0;
+        display: inline-block;
+    }
+    .file-upload-trigger {
+        display: inline-block;
+        padding: 8px 16px;
+        border: 2px dashed #4682b4;
+        background-color: #e6f0fa;
+        color: #4682b4;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        margin-bottom: 0;
+    }
+    .file-upload-trigger:hover {
+        background-color: #d1e4f7;
+        transform: scale(1.02);
+    }
+    .file-upload-trigger:active {
+        background-color: #c8dcef;
+    }
+    .file-name {
+        font-size: 12px;
+        color: #666;
+        margin-left: 5px;
+    }
+    .photo-section {
+        width: 120px;
+        height: 150px;
+        border: 2px dashed #4682b4;
+        text-align: center;
+        padding: 5px;
+        cursor: pointer;
+        background-color: #e6f0fa;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+    }
+    .photo-section:hover {
+        background-color: #d1e4f7;
+        transform: scale(1.02);
+    }
+    .photo-section:active {
+        background-color: #c8dcef;
+    }
+    .photo-section img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 6px;
+    }
+    .photo-section p {
+        margin: 0;
+        font-size: 12px;
+        color: #4682b4;
+        font-weight: bold;
+    }
+    .photo-section .upload-instruction {
+        font-size: 10px;
+        color: #666;
+        margin-top: 5px;
+    }
+    .photo-section .upload-icon {
+        font-size: 20px;
+        color: #4682b4;
+        margin-bottom: 5px;
+    }
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 25px;
+    }
+    .btn-primary {
+        background-color: #4682b4;
+        border: none;
+        padding: 12px 30px;
+        font-size: 16px;
+        border-radius: 6px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .btn-primary:hover {
+        background-color: #2a5e8a;
+        transform: translateY(-2px);
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+        padding: 12px 30px;
+        font-size: 16px;
+        border-radius: 6px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        transform: translateY(-2px);
+    }
+    .error-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .form-wrapper {
+            padding: 15px;
+        }
+        .form-content {
+            padding: 20px;
+        }
+        .form-container {
+            gap: 20px;
+        }
+        .photo-section {
+            width: 100px;
+            height: 125px;
+        }
+    }
+    @media (max-width: 480px) {
+        .form-header h1 {
+            font-size: 1.8rem;
+        }
+        .form-content {
+            padding: 15px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            font-size: 14px;
+        }
+        .file-upload-trigger {
+            font-size: 12px;
+            padding: 6px 12px;
+        }
+        .file-name {
+            font-size: 10px;
+            margin-left: 3px;
+        }
+        .upload-row {
+            gap: 5px;
+        }
+        .photo-section {
+            width: 90px;
+            height: 110px;
+        }
+    }
+</style>
+{% endblock %}

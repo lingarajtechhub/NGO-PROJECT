@@ -1,0 +1,360 @@
+<!DOCTYPE html %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Widow/Widower Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #000;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #4682b4;
+            padding-bottom: 10px;
+            min-height: 100px;
+        }
+        .header img {
+            width: 60px;
+            height: auto;
+            margin-right: 20px;
+        }
+        .header-text {
+            flex: 1;
+            text-align: center;
+        }
+        .header h1 {
+            color: #4682b4;
+            font-size: 40px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .header p {
+            color: #4682b4;
+            font-size: 20px;
+            margin: 5px 0;
+        }
+        .header h2 {
+            color: #4682b4;
+            font-size: 15px;
+            margin: 5px 0;
+        }
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .form-group {
+            flex: 1;
+            margin-right: 20px;
+        }
+        .form-group:last-child {
+            margin-right: 0;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .form-group p {
+            border-bottom: 1px dotted #000;
+            min-height: 20px;
+            margin: 0;
+        }
+        .form-group.inline {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: nowrap;
+        }
+        .form-group.inline p {
+            flex: 1;
+        }
+        .form-group.address p,
+        .form-group.dependents p {
+            display: block;
+            border-bottom: 1px dotted #000;
+        }
+        .form-group.address p {
+            border-bottom: none;
+        }
+        .form-group.case-history p {
+            display: block;
+            border-bottom: none;
+        }
+        .full-width {
+            width: 100%;
+        }
+        .form-group.full-width:not(.case-history) p,
+        .form-group.address p,
+        .form-group.dependents p {
+            margin-right: 140px; /* Space for the photo section (120px width + 25px right offset) */
+        }
+        /* Reduce dotted line length for specific full-width fields */
+        .form-group.husband-wife-name p,
+        .form-group.cause-of-death p,
+        .form-group.nationality p,
+        .form-group.religion p {
+            margin-right: 200px; /* Shorten the line */
+        }
+        .form-row:not(:nth-child(2)) .form-group.inline.age p {
+            max-width: 100px; /* Shorten the "Age" field line */
+        }
+        .photo-section {
+            width: 120px;
+            height: 150px;
+            border: 2px solid #000;
+            text-align: center;
+            position: absolute;
+            right: 25px;
+            top: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+        }
+        .photo-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border: none;
+        }
+        .photo-section p {
+            margin: 5px 0;
+            font-size: 12px;
+            border: none;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 100px;
+        }
+        .signature-section div {
+            width: 45%;
+            text-align: center;
+        }
+        .signature-section p {
+            border-top: 1px solid #000;
+            padding-top: 10px;
+            margin: 0;
+        }
+        @media print {
+            @page {
+                margin: 0;
+                size: auto;
+            }
+            body {
+                margin: 0 !important;
+                -webkit-print-color-adjust: exact;
+            }
+            .container {
+                border: none;
+                page-break-inside: avoid;
+            }
+            .photo-section {
+                border: 2px solid #000 !important;
+            }
+            .form-group p {
+                border-bottom: 1px dotted #000 !important;
+            }
+            .form-group.address p {
+                border-bottom: none !important;
+            }
+            .form-group.case-history p {
+                border-bottom: none !important;
+            }
+            .form-group.full-width:not(.case-history) p,
+            .form-group.address p,
+            .form-group.dependents p {
+                margin-right: 140px !important;
+            }
+            .form-group.husband-wife-name p,
+            .form-group.cause-of-death p,
+            .form-group.nationality p,
+            .form-group.religion p {
+                margin-right: 200px !important; /* Reinforce shortened line */
+            }
+            .form-row:not(:nth-child(2)) .form-group.inline.age p {
+                max-width: 100px !important; /* Reinforce shortened "Age" line */
+            }
+            .form-group.inline {
+                display: flex !important;
+                align-items: baseline !important;
+                gap: 10px !important;
+                flex-wrap: nowrap !important;
+            }
+            .form-group.inline p {
+                flex: 1 !important;
+            }
+        }
+    </style>
+</head>
+<body onload="window.print()">
+    <div class="container">
+        <div class="header">
+            <img src="/media/logo.jpg" alt="Logo">
+            <div class="header-text">
+                <h1>WIDOW/WIDOWER PROFILE</h1>
+                <p>TRANSFORMATION CHARITABLE ACTION</p>
+                <h2>Satabdi Bihar, Bidanasi, Cuttack, Odisha-753014</h2>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group inline">
+                <label>Widow's/Widower's Registration Number:</label>
+                <p>{{ profile.registration_number|default:"________________________" }}</p>
+            </div>
+            <div class="form-group inline">
+                <label>Date:</label>
+                <p>{{ profile.date|date:"d/m/Y"|default:"___/___/_____" }}</p>
+            </div>
+            <div class="photo-section">
+                {% if profile.photo %}
+                    <img src="{{ profile.photo.url }}" alt="Profile Photo">
+                {% else %}
+                    <p>Affix Passport Size Photo</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group inline full-width">
+            <label>Name:</label>
+            <p>{{ profile.name|default:"___________________________________________________________" }}</p>
+        </div>
+
+        <div class="form-group inline full-width">
+            <label>Gender: Male / Female /</label>
+            <p>{{ profile.gender|default:"________________________" }}</p>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group inline">
+                <label>Date of Birth:</label>
+                <p>{{ profile.date_of_birth|date:"d/m/Y"|default:"___/___/_____" }}</p>
+            </div>
+            <div class="form-group inline age">
+                <label>Age:</label>
+                <p>{{ profile.age|default:"__________ Years" }}</p>
+            </div>
+        </div>
+
+        <div class="form-group inline full-width husband-wife-name">
+            <label>Husband/Wife Name:</label>
+            <p>{{ profile.spouse_name|default:"___________________________________________________________" }}</p>
+        </div>
+
+        <div class="form-group inline full-width cause-of-death">
+            <label>Cause of Death of Wife/Husband:</label>
+            <p>{{ profile.cause_of_death|default:"___________________________________________________________" }}</p>
+        </div>
+
+        <div class="form-group inline full-width nationality">
+            <label>Nationality: Indian</label>
+            <p>{{ profile.nationality|default:"________________________" }}</p>
+        </div>
+
+        <div class="form-group inline full-width religion">
+            <label>Religion: Hindu / Christian / Muslim /</label>
+            <p>{{ profile.religion|default:"________________________" }}</p>
+        </div>
+
+        <div class="form-group address full-width">
+            <label>Address:</label>
+            <p>{{ profile.address|default:"_____________________________________________________________________________________" }}</p>
+            <p>_____________________________________________________________________________________</p>
+        </div>
+
+        <div class="form-group inline full-width">
+            <label>Contact Phone: (Of Near Relative if any)</label>
+            <p>{{ profile.contact_phone|default:"___________________________________________________________" }}</p>
+        </div>
+
+        <div class="form-group case-history full-width">
+            <label>Widow's/Widower's Case History:</label>
+            <p>{{ profile.case_history|default:"_____________________________________________________________________________________" }}</p>
+            <p>_____________________________________________________________________________________</p>
+            <p>_____________________________________________________________________________________</p>
+            <p>_____________________________________________________________________________________</p>
+            <p>_____________________________________________________________________________________</p>
+            <p>_____________________________________________________________________________________</p>
+            <p>_____________________________________________________________________________________</p>
+            <p>_____________________________________________________________________________________</p>
+        </div>
+
+        <div class="form-group dependents full-width">
+            <label>Any Dependent(s):</label>
+            <p>{{ profile.dependents|default:"_____________________________________________________________________________________" }}</p>
+        </div>
+
+        <div class="section-title">Dependent Details (If Any):</div>
+        <div class="form-row">
+            <div class="form-group inline">
+                <label>Name:</label>
+                <p>{{ profile.dependents_name|default:"________________________" }}</p>
+            </div>
+            <div class="form-group inline">
+                <label>Age:</label>
+                <p>{{ profile.dependents_age|default:"__________" }}</p>
+            </div>
+            <div class="form-group inline">
+                <label>Sex:</label>
+                <p>{{ profile.dependents_sex|default:"__________" }}</p>
+            </div>
+        </div>
+
+        <div class="section-title">Prepared/Received Documents:</div>
+        <div class="form-group inline full-width">
+            <label>Death Certificate:</label>
+            <p>{{ profile.death_certificate|yesno:"Yes,No" }}{% if profile.death_certificate_file %} (Attached){% endif %}</p>
+        </div>
+        <div class="form-group inline full-width">
+            <label>Aadhar Card Photocopy:</label>
+            <p>{{ profile.aadhar_card|yesno:"Yes,No" }}{% if profile.aadhar_card_file %} (Attached){% endif %}</p>
+        </div>
+        <div class="form-group inline full-width">
+            <label>Aadhar Number:</label>
+            <p>{{ profile.aadhar_number|default:"________________________" }}</p>
+        </div>
+        <div class="form-group inline full-width">
+            <label>Application:</label>
+            <p>{{ profile.application|yesno:"Yes,No" }}{% if profile.application_file %} (Attached){% endif %}</p>
+        </div>
+        <div class="form-group inline full-width">
+            <label>Letter from Sarpanch/Ward Councillor/Pastor:</label>
+            <p>{{ profile.letter_from_sarpanch|yesno:"Yes,No" }}</p>
+        </div>
+        <div class="form-group inline full-width">
+            <label>Emergency Contact:</label>
+            <p>{{ profile.emergency_contact|default:"________________________" }}</p>
+        </div>
+
+        <div class="signature-section">
+            <div>
+                <p>Signature of Widow/Widower</p>
+            </div>
+            <div>
+                <p>Signature of NGO Director</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1><center>Delete Profile</center></h1>
+<p><center>Are you sure you want to delete the profile for {{ profile.name }}?</center></p>
+<center>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, Delete</button>
+    <a href="{% url 'profile_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+</center>
+{% endblock %}
