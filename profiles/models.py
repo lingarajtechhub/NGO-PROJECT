@@ -17,7 +17,19 @@ class WidowProfile(models.Model):
         ('Yes', 'Yes'),
         ('No', 'No'),
     ]
-
+    PROJECT_NAME_CHOICES = [
+    ('TCA CUTTACK', 'TCA CUTTACK'),
+    ('TCA BHUBANESWAR', 'TCA BHUBANESWAR'),
+    ('TCA SUNDARGARH', 'TCA SUNDARGARH'),
+    ('TCA PARALAKHEMUNDI', 'TCA PARALAKHEMUNDI'),
+    ('TCA CHANDIGARH', 'TCA CHANDIGARH'),
+    ('TCA GUNTUR(A)', 'TCA GUNTUR(A)'),
+    ('TCA GUNTUR(B)', 'TCA GUNTUR(B)'),
+    ('TCA EAST GODAVARI(A)', 'TCA EAST GODAVARI(A)'),
+    ('TCA EAST GODAVARI(B)', 'TCA EAST GODAVARI(B)'),
+    ('TCA MOHANA', 'TCA MOHANA'),
+    ]
+    project_name = models.CharField(max_length=100, choices=PROJECT_NAME_CHOICES,blank=True,null=True)
     registration_number = models.CharField(max_length=50, unique=True)
     date = models.DateField()
     name = models.CharField(max_length=100)

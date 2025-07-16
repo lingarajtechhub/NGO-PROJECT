@@ -4,11 +4,22 @@
 <!--<div class="form-header">
     <h1>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Widow/Widower Profile</h1>
 </div>-->
+<style>
+    .fixed-footer{
+        text-align:center;
+    }
+</style>
+
 <div class="form-wrapper">
     <form method="post" enctype="multipart/form-data" class="form-content" id="profile-form">
         {% csrf_token %}
         <div class="form-container">
             <div class="form-fields">
+                <div class="form-group">
+    <label for="id_project_name">Project Names:</label>
+    {{ form.project_name }}
+    <span class="error-message" id="error-project_name"></span>
+</div>
                 <div class="form-group inline">
                     <div>
                         <label for="id_registration_number">Registration Number:</label>
@@ -192,6 +203,10 @@
         </div>
     </form>
 </div>
+<footer class="fixed-footer">
+    This Platform was Developed by <strong>Boostr Netwave Solutions</strong>
+</footer>
+
 
 <script>
     // Toggle dependents fields based on radio button selection
