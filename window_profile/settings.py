@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'profiles'
+    'profiles',
+    'widget_tweaks'
 ]
 # Authentication settings
 LOGIN_URL = '/signin/'

@@ -4,14 +4,10 @@ from .models import WidowProfile
 class WidowProfileForm(forms.ModelForm):
     class Meta:
         model = WidowProfile
-        fields = [
-            'registration_number', 'date', 'name', 'gender', 'date_of_birth', 'age',
-            'spouse_name', 'cause_of_death', 'nationality', 'religion', 'address',
-            'contact_phone', 'case_history', 'dependents', 'dependents_name', 'dependents_age',
-            'dependents_sex', 'death_certificate', 'death_certificate_file',
-            'aadhar_card', 'aadhar_card_file', 'aadhar_number', 'letter_from_sarpanch',
-            'application', 'application_file', 'emergency_contact', 'photo'
-        ]
+        fields = '__all__'
+        labels = {
+            'project_name': 'Select Project Location',
+        }
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
